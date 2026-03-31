@@ -1,26 +1,114 @@
 @import "tailwindcss";
 
+/* ─── Luxury palette: plum, soft pink, cream, warm neutrals ─── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cream: #faf6f1;
+  --cream-deep: #f2e8df;
+  --blush: #e8b8c8;
+  --blush-soft: #f5dde6;
+  --plum: #4a2d42;
+  --plum-mid: #5c3a52;
+  --plum-light: #7a5370;
+  --warm-gray: #6b5f5e;
+  --warm-gray-light: #9a8b88;
+  --white: #fffcfa;
+  --shadow-soft: 0 4px 24px -4px rgb(74 45 66 / 12%);
+  --shadow-lift: 0 12px 40px -8px rgb(74 45 66 / 18%);
+  --glass: rgb(255 252 250 / 72%);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-cream: var(--cream);
+  --color-cream-deep: var(--cream-deep);
+  --color-blush: var(--blush);
+  --color-blush-soft: var(--blush-soft);
+  --color-plum: var(--plum);
+  --color-plum-mid: var(--plum-mid);
+  --color-plum-light: var(--plum-light);
+  --color-warm: var(--warm-gray);
+  --color-warm-light: var(--warm-gray-light);
+  --color-surface: var(--white);
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(
+    165deg,
+    var(--cream) 0%,
+    var(--blush-soft) 45%,
+    var(--cream-deep) 100%
+  );
+  color: var(--plum);
+  font-family: var(--font-sans);
+}
+
+/* Refined focus for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--plum-light);
+  outline-offset: 3px;
+}
+
+/* Subtle section entrance — used on section wrappers */
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-rise {
+  animation: fade-rise 0.7s ease-out forwards;
+}
+
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+/* Premium card shell */
+.card-premium {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgb(255 255 255 / 0.55);
+  box-shadow: var(--shadow-soft);
+  border-radius: 1.25rem;
+  transition:
+    box-shadow 0.35s ease,
+    transform 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.card-premium:hover {
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-2px);
+  border-color: rgb(232 184 200 / 0.4);
 }
