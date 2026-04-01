@@ -1,12 +1,23 @@
+import { auth } from "@/auth";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { AdminLoginForm } from "@/app/admin/login/login-form";
 
 /**
  * Admin sign-in. Credentials live in AdminUser (see Prisma seed).
  * Production URL: https://www.kerstencrawford.com/admin/login
+ *
+ * If already signed in (same `auth()` as dashboards), skip the form — avoids
+ * conflicting with middleware when session is valid in Node but was previously
+ * mishandled in the Edge login→admin redirect.
  */
-export default function AdminLoginPage() {
+export default async function AdminLoginPage() {
+  const session = await auth();
+  if (session?.user) {
+    redirect("/admin");
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-zinc-950 px-4 py-16 text-zinc-100">
       <div className="mx-auto w-full max-w-md">
