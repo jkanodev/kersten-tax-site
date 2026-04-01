@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { StatCard } from "@/components/admin/stat-card";
 import { db } from "@/lib/db";
 
@@ -74,6 +75,22 @@ export default async function AdminDashboardPage() {
       <p className="mt-2 text-sm text-zinc-400">
         Overview of clients, scheduling, and website inquiries.
       </p>
+      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-500">
+        <span className="font-medium text-zinc-400">Where requests go:</span> Anything
+        submitted from the public <strong className="font-medium text-zinc-300">Schedule</strong>{" "}
+        or <strong className="font-medium text-zinc-300">Contact</strong> forms appears under{" "}
+        <Link href="/admin/inquiries" className="text-rose-300 underline-offset-2 hover:underline">
+          Inquiries
+        </Link>
+        . The{" "}
+        <Link
+          href="/admin/appointments"
+          className="text-rose-300 underline-offset-2 hover:underline"
+        >
+          Appointments
+        </Link>{" "}
+        page is your calendar — add entries there after you confirm a time with the client.
+      </p>
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <StatCard label="Active clients" value={totalClients} hint="Not archived" />
@@ -83,7 +100,11 @@ export default async function AdminDashboardPage() {
           hint="Pending or confirmed, from today"
         />
         <StatCard label="Completed visits" value={completedAppointments} />
-        <StatCard label="New inquiries" value={newInquiries} hint="Needs attention" />
+        <StatCard
+          label="New inquiries"
+          value={newInquiries}
+          hint="Contact + schedule requests from the site"
+        />
       </div>
 
       <section className="mt-12">

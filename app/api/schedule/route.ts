@@ -20,18 +20,29 @@ export async function POST(request: Request) {
   }
 
   const p = parsed.payload;
-  await db.inquiry.create({
-    data: {
-      kind: "SCHEDULE_REQUEST",
-      fullName: p.fullName,
-      phone: p.phone,
-      email: p.email,
-      serviceType: p.serviceNeeded,
-      preferredDate: p.preferredDate,
-      preferredTime: p.preferredTime,
-      notes: p.notes || null,
-    },
-  });
+  try {
+    await db.inquiry.create({
+      data: {
+        kind: "SCHEDULE_REQUEST",
+        fullName: p.fullName,
+        phone: p.phone,
+        email: p.email,
+        serviceType: p.serviceNeeded,
+        preferredDate: p.preferredDate,
+        preferredTime: p.preferredTime,
+        notes: p.notes || null,
+      },
+    });
+  } catch (e) {
+    console.error("[api/schedule] database error", e);
+    return NextResponse.json(
+      {
+        error:
+          "We could not save your request. Please call the office or try again shortly.",
+      },
+      { status: 500 },
+    );
+  }
 
   return NextResponse.json({
     success: true,

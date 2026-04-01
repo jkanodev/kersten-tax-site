@@ -15,7 +15,7 @@ export default async function InquiriesPage() {
     <div>
       <AdminPageTitle
         title="Inquiries"
-        subtitle="Messages and appointment requests submitted from the public site."
+        subtitle="Inbox for the public Contact form and Schedule form. Each row is a lead — convert confirmed times into calendar entries under Appointments."
       />
 
       <div className="space-y-6">

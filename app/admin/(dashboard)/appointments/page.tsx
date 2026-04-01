@@ -58,9 +58,17 @@ export default async function AppointmentsPage({
     <div>
       <AdminPageTitle
         title="Appointments"
-        subtitle="Blocks cannot overlap unless a row is cancelled."
+        subtitle="Your calendar (slots you add here). Public schedule form submissions appear under Inquiries — open that list to see new requests, then add a confirmed time here."
         action={{ href: "/admin/appointments/new", label: "New appointment" }}
       />
+
+      <p className="mb-6 text-sm text-zinc-500">
+        Looking for a request someone submitted on the website? Go to{" "}
+        <Link href="/admin/inquiries" className="text-rose-300 hover:underline">
+          Inquiries
+        </Link>
+        .
+      </p>
 
       {sp.error ? (
         <div
