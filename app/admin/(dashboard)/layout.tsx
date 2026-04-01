@@ -1,18 +1,13 @@
-import { auth } from "@/auth";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
-import { redirect } from "next/navigation";
 
 /**
- * Protected shell: sidebar + main content. Middleware also guards /admin routes.
+ * Dashboard chrome only. Access control is entirely in middleware.ts (single gate).
  */
-export default async function AdminDashboardLayout({
+export default function AdminDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-  if (!session?.user) redirect("/admin/login");
-
   return (
     <div className="flex min-h-screen flex-col bg-zinc-950 text-zinc-100 lg:flex-row">
       <AdminSidebar />

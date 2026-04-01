@@ -2,11 +2,22 @@
 
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+
+/** Relative in-app path only; prevents open redirects and host hopping after sign-in. */
+function safeAdminCallbackUrl(raw: string | null): string {
+  if (!raw || !raw.startsWith("/") || raw.startsWith("//")) return "/admin";
+  if (raw.includes(":")) return "/admin";
+  if (!raw.startsWith("/admin")) return "/admin";
+  return raw;
+}
 
 export function AdminLoginForm() {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/admin";
+  const callbackUrl = useMemo(
+    () => safeAdminCallbackUrl(searchParams.get("callbackUrl")),
+    [searchParams],
+  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -27,8 +38,7 @@ export function AdminLoginForm() {
       setError("Email or password is incorrect.");
       return;
     }
-    const next = callbackUrl.startsWith("/") ? callbackUrl : "/admin";
-    window.location.href = next;
+    window.location.assign(callbackUrl);
   }
 
   return (

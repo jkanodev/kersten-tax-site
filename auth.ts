@@ -5,7 +5,9 @@ import { db } from "@/lib/db";
 
 /**
  * NextAuth (Auth.js v5) — email + password for admin users only.
- * On Vercel, set AUTH_SECRET and AUTH_URL (https://www.kerstencrawford.com).
+ *
+ * Vercel production: set AUTH_SECRET and AUTH_URL exactly to
+ * https://www.kerstencrawford.com (matches middleware + session cookies).
  */
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
