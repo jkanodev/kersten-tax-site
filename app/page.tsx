@@ -1,4 +1,3 @@
-import { BusinessCardSection } from "@/components/business-card-section";
 import { AboutIntro } from "@/components/sections/about-intro";
 import { Faq } from "@/components/sections/faq";
 import { Hero } from "@/components/sections/hero";
@@ -21,7 +20,6 @@ export default function HomePage() {
       <Services />
       <TrustSection />
       <WhyUs />
-      <BusinessCardSection />
       <Faq />
       <HomeSchedule />
       <HomeContactCta />

@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { parseContactBody } from "@/lib/api/contact";
-import { logSubmission } from "@/lib/api/log-submission";
+import { db } from "@/lib/db";
 
 /**
  * POST /api/contact
- * Accepts general inquiries from the contact form.
+ * Stores the message as an Inquiry (CONTACT) for the admin inbox.
  */
 export async function POST(request: Request) {
   let json: unknown;
@@ -19,7 +19,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
 
-  await logSubmission("contact", { ...parsed.payload });
+  const p = parsed.payload;
+  await db.inquiry.create({
+    data: {
+      kind: "CONTACT",
+      fullName: p.name,
+      phone: p.phone || null,
+      email: p.email,
+      message: p.message,
+    },
+  });
 
   return NextResponse.json({
     success: true,

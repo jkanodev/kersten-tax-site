@@ -1,6 +1,9 @@
 /**
  * Central place for Kersten Crawford business details.
  * Update phone, email, or domain here and the site updates everywhere.
+ *
+ * Production: apex + www are on Vercel (kerstencrawford.com / www.kerstencrawford.com).
+ * Admin app lives at /admin on the same deployment — see DEPLOYMENT.md.
  */
 export const site = {
   name: "Kersten Crawford",

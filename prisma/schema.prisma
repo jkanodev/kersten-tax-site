@@ -1,0 +1,77 @@
+// Kersten Crawford — tax practice data model
+//
+// LOCAL: DATABASE_URL="file:./dev.db" (SQLite; enums are stored as strings).
+// PRODUCTION ON VERCEL: Use PostgreSQL (Neon, Supabase, etc.) — see DEPLOYMENT.md.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Client {
+  id                     String    @id @default(cuid())
+  fullName               String
+  phone                  String?
+  email                  String?
+  address                String?
+  taxNotes               String?
+  /// PHONE | EMAIL | TEXT
+  preferredContactMethod String    @default("PHONE")
+  archivedAt             DateTime?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  appointments           Appointment[]
+}
+
+model Appointment {
+  id          String    @id @default(cuid())
+  clientId    String?
+  client      Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  clientName  String
+  phone       String
+  email       String
+  serviceType String
+  startAt     DateTime
+  endAt       DateTime
+  notes       String?
+  /// PENDING | CONFIRMED | COMPLETED | CANCELLED
+  status      String    @default("PENDING")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([startAt, endAt])
+  @@index([status])
+}
+
+model Inquiry {
+  id            String   @id @default(cuid())
+  /// CONTACT | SCHEDULE_REQUEST
+  kind          String
+  /// NEW | READ | ARCHIVED
+  status        String   @default("NEW")
+  fullName      String
+  phone         String?
+  email         String
+  message       String?
+  serviceType   String?
+  preferredDate String?
+  preferredTime String?
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([kind, status])
+}

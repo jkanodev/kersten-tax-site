@@ -5,6 +5,7 @@ import { site } from "@/lib/site";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { StickyMobileCta } from "@/components/sticky-mobile-cta";
+import { SessionProvider } from "@/components/session-provider";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -47,12 +48,14 @@ export default function RootLayout({
       lang="en"
       className={`${cormorant.variable} ${dmSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans text-plum">
-        <SiteHeader />
-        {/* Bottom padding on small screens so the sticky CTA never covers content */}
-        <div className="flex flex-1 flex-col pb-24 lg:pb-0">{children}</div>
-        <SiteFooter />
-        <StickyMobileCta />
+      <body className="flex min-h-full flex-col font-sans text-plum">
+        <SessionProvider>
+          <SiteHeader />
+          {/* Bottom padding on small screens so the sticky CTA never covers content */}
+          <div className="flex flex-1 flex-col pb-24 lg:pb-0">{children}</div>
+          <SiteFooter />
+          <StickyMobileCta />
+        </SessionProvider>
       </body>
     </html>
   );

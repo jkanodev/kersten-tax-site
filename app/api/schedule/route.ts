@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 import { parseScheduleBody } from "@/lib/api/schedule";
-import { logSubmission } from "@/lib/api/log-submission";
+import { db } from "@/lib/db";
 
 /**
  * POST /api/schedule
- * Accepts appointment requests from the schedule form.
- * Vercel serverless-friendly: no long-running connections required.
+ * Stores a scheduling request as an Inquiry (SCHEDULE_REQUEST) for the admin inbox.
  */
 export async function POST(request: Request) {
   let json: unknown;
@@ -20,7 +19,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
 
-  await logSubmission("schedule", { ...parsed.payload });
+  const p = parsed.payload;
+  await db.inquiry.create({
+    data: {
+      kind: "SCHEDULE_REQUEST",
+      fullName: p.fullName,
+      phone: p.phone,
+      email: p.email,
+      serviceType: p.serviceNeeded,
+      preferredDate: p.preferredDate,
+      preferredTime: p.preferredTime,
+      notes: p.notes || null,
+    },
+  });
 
   return NextResponse.json({
     success: true,
