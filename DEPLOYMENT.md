@@ -41,15 +41,35 @@ The `package.json` `build` script runs `prisma generate` before `next build`. Ad
 
 `prisma migrate deploy && prisma generate && next build`
 
-## First admin user
+## First admin user (local SQLite)
 
-Run locally after migrations:
+After migrations:
 
 ```bash
 npm run db:seed
 ```
 
-Defaults to `kerstencrawford@outlook.com` with password from `SEED_ADMIN_PASSWORD` or `ChangeMeSoon!123`. **Change the password immediately** under **Admin → Settings**.
+Creates `kerstencrawford@outlook.com` only if missing (seed does not reset passwords on re-run).
+
+## Production admin bootstrap (Vercel + Postgres)
+
+If production login fails, the `AdminUser` row is often missing or the hash does not match. **Do not** expose a setup URL in production; run this **once from your laptop** against the **same `DATABASE_URL`** Vercel uses:
+
+1. Vercel → Project → Settings → Environment Variables → copy **Production** `DATABASE_URL`.
+2. From this repo on your machine (Node installed):
+
+```bash
+cd /path/to/kersten-tax-site
+ALLOW_ADMIN_BOOTSTRAP=1 DATABASE_URL="paste-your-production-url-here" npm run bootstrap:admin
+```
+
+This **creates or updates** `kerstencrawford@outlook.com` with password **`ChangeMeSoon!123`** (bcrypt, 12 rounds — same as `auth.ts` / seed).
+
+Optional: `BOOTSTRAP_ADMIN_PASSWORD='YourSecret'` before `npm run bootstrap:admin` to set a different password.
+
+The script **refuses to run** unless `ALLOW_ADMIN_BOOTSTRAP=1` (prevents accidental execution).
+
+After login, **change the password** under **Admin → Settings** and stop sharing the bootstrap password.
 
 ## Security
 
