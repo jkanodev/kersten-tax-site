@@ -6,7 +6,8 @@ const prisma = new PrismaClient();
 /**
  * Seeds the database with:
  * - One admin user (password from SEED_ADMIN_PASSWORD or a dev default — change in production!)
- * - Demo clients, appointments, and inquiries for a populated dashboard
+ * - Demo clients, appointments, and inquiries for a populated dashboard.
+ *   Requires DATABASE_URL pointing at PostgreSQL (local Docker or hosted).
  */
 async function main() {
   const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? "ChangeMeSoon!123";

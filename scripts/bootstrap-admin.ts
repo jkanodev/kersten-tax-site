@@ -5,8 +5,8 @@
  *
  * SAFETY: Exits unless ALLOW_ADMIN_BOOTSTRAP=1 is set, so it cannot run by accident.
  *
- * Production (run from your machine, not on Vercel):
- *   ALLOW_ADMIN_BOOTSTRAP=1 DATABASE_URL="<paste Vercel prod DATABASE_URL>" npx tsx scripts/bootstrap-admin.ts
+ * Production PostgreSQL (run from your machine; uses same DATABASE_URL as Vercel):
+ *   ALLOW_ADMIN_BOOTSTRAP=1 DATABASE_URL="<paste Vercel prod DATABASE_URL>" npm run bootstrap:admin
  *
  * Optional: BOOTSTRAP_ADMIN_PASSWORD overrides the default password (default: ChangeMeSoon!123)
  */

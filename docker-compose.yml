@@ -1,0 +1,19 @@
+# Local PostgreSQL — same engine as production (Neon / Supabase / RDS).
+# Usage: docker compose up -d
+# Then set DATABASE_URL in .env (see .env.example) and run: npx prisma migrate dev
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: kersten
+      POSTGRES_PASSWORD: kersten
+      POSTGRES_DB: kersten
+    ports:
+      # Use 5433 on host if something else already uses 5432 (common with local Postgres).
+      - "5433:5432"
+    volumes:
+      - kersten_pg_data:/var/lib/postgresql/data
+
+volumes:
+  kersten_pg_data:

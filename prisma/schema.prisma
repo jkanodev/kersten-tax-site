@@ -1,14 +1,27 @@
 // Kersten Crawford — tax practice data model
 //
-// LOCAL: DATABASE_URL="file:./dev.db" (SQLite; enums are stored as strings).
-// PRODUCTION ON VERCEL: Use PostgreSQL (Neon, Supabase, etc.) — see DEPLOYMENT.md.
+// ┌── LOCAL DEVELOPMENT ─────────────────────────────────────────────────────┐
+// │ Use PostgreSQL (same engine as production). Easiest path:                 │
+// │   docker compose up -d                                                     │
+// │   DATABASE_URL="postgresql://kersten:kersten@localhost:5432/kersten?schema=public" │
+// │   npx prisma migrate dev                                                   │
+// │ SQLite is intentionally NOT supported — Vercel serverless cannot rely on   │
+// │ a local file DB in production. One provider keeps migrations identical.    │
+// └────────────────────────────────────────────────────────────────────────────┘
+//
+// ┌── PRODUCTION (Vercel) ─────────────────────────────────────────────────────┐
+// │ Set DATABASE_URL to a hosted Postgres connection string, e.g. Neon:        │
+// │   postgresql://user:pass@ep-xxx.region.aws.neon.tech/neondb?sslmode=require │
+// │ Use the "pooled" / serverless URL if your host provides it.               │
+// │ Run migrations during deploy: see package.json "build" and DEPLOYMENT.md.  │
+// └────────────────────────────────────────────────────────────────────────────┘
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -71,7 +84,7 @@ model Inquiry {
   preferredTime String?
   notes         String?
   createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
 
   @@index([kind, status])
 }

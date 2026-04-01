@@ -45,6 +45,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# local SQLite (dev)
+# Legacy local SQLite files (project now uses Postgres only)
 prisma/*.db
 prisma/*.db-journal
